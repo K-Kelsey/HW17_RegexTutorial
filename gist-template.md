@@ -151,7 +151,26 @@ In the email regex example, we see the inclusion of the character class \d: `([ 
 
 ### The OR Operator
 
+The OR | operator in a regex pattern tells the engine to look for multiple instances of a set criteria, but not a mixture of various values. The pattern <code style="background-color:#B8B8B8;color:white;"> /^cat|dog/gmi</code> would find <code style="background-color:#B8B8B8;color:white;"><strong style="color:#585C81">cat</strong>s play with yarn, but <strong style="color:#585C81">dog</strong>s don't.</code>
+as well as <p><code style="background-color:#B8B8B8;color:white;"><strong style="color:#585C81">CAT</strong>S are terrible, <strong style="color:#585C81">DOG</strong>S RULE!</code></p>
+
+This overwrites the case sensitive rule because of the use of flags in our search pattern. Which brings us to our next section.
+
 ### Flags
+
+To make regular expressions more versatile, there are six optional flags that can be used. 
+These include: 
+* /i for case-insensitive matching 
+* /m for multi-line search
+* /g tells the engine to find all occurrences of a pattern in one or many strings instead of stopping at the first match only (/g stands for global)
+* /s allows the engine to match newline characters
+* /u tells the engine to treat a pattern sequence as a string of unicode characters
+* /d generates substring matches
+
+In our example, we are assuming you're looking for all occurrences and on multiple lines.
+<p>
+<code style="background-color:#B8B8B8;color:white;">/^[A-Z]{1}[\d]{3}\-[\d]{4}\-[\d]{4}$<strong style="color:#F4FF00">/gm</strong></code>
+</p>
 
 ### Character Escapes
 
