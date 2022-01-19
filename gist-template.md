@@ -69,11 +69,85 @@ This can be implemented into the regex by using one or more of the following:
 
     * { 1, 5 } Matches the pattern AT LEAST 1 time and A MAXIMUM of 5 times
 
+The quantifier can be made "lazy" by adding a ? symbol at the end of the request, which will result in returning as few occurences as possible.
+
+Reffering back to the Email Regex: `/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/` we recognize that quantifiers are being used at the end of the expression: `\.([a-z\.] {2,6} )$/`, this part of the Regex is used for identifying the .com, .net, or .edu part of the email address. It establishes the amount of characters allowed following the (.) of an email address. In the example here, the expression allows 2-6 characters to follow the closing of the email address. In the same expression you will notice a (.) on the 15th and 29th index of the expression which indicates that the search parameters must result in a match of characters at least one or more times.
+
+Here are a few examples of acceptable and inacceptable email address inputs in regards to the email regex search pattern:
+
+Allowed:
+
+myname@email.com \
+myname@email.edu \
+myname_88@email-88.net
+
+Not Allowed:
+
+myname@email.emailaddress isn't allowed because it has too many characters after the . closing of the email address \
+myname@email.c isn't allowed because it doesn't have enough characters after the . clsoing of the email address \
+@email.com is not accepted because there are no characters before the @ symbol and the search requirement that includes the + symbol signifies that the pattern must match at least 1 or more times for the argument to be accepted.
+
 ### Grouping Constructs
+
+Grouping constructs are used to compartmentailze different search parameters in a regular expressions, and where those results are placed in the end product of the regex. That being said, the example: myname@email.com will be broken apart into 3 different components of the regex ( myname, email, .com) that satisfy the regex search requiremnets.
+Here are the corresponding sections of the email regex:
+
+1. `([a-z0-9_\.-]+)`
+2. `([\da-z\.-]+)`
+3. `([a-z\.]{2,6})`
+
+If we are refer to the regex as a whole, it will then be considered group 0.
 
 ### Bracket Expressions
 
+To target which characters are acceptable in the regex search algorithm, we look for the square bracket [] indicators that represent the acceptable values of the search parameter. These are known as bracket expressions; we create these expressions to identify all acceptable values that we want the expression to match.
+
+The bracket expression: [a-z] will accept the values of "a" the value of "z" and all of the letters that fall inbetween the two values. As a result for this example, the entire alphabet is returned.
+
+Take a look at some of these examples of bracket expressions cans and cannots:
+* [a-z] as mentioned, will return us the entire alphabet. However, this will only return us the lowercase values of the alphabet. To include the uppercase values we would add the argument [a-z A-Z] to the expression
+* [0-9] will return any variation of the string number values 0-9. This includes 32, 5372, 102 because the expression identifies these numbers by individual value.
+
+In our example of the email regex: `/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/` we can see the bracket notations being used in each expression "group".
+
+`/^( [a-z0-9_\.-] +)` accepts the values of any letter between "a" and "z", 1-9, an underscore, period or hyphen.
+
+`( [\da-z\.-] +)` accepts the values of any number, lower case value, period or hyphen. \d represents the numeric string values of [ 0-9 ]
+
+`( [a-z\.] {2,6})$/` uses bracket notation to allow for a lowercase letter or period
+
+Allowed use of bracket expressions:
+
+myname@email.com \
+myname8032@email.com \
+myname-_.@email.com
+
+Not Allowed based off of the parameters set in the breacket expressions:
+
+myname!@email.com is not accepted becuase the exclamation ! point was not included in the bracket expression. \
+myname##@e_mail.com is not accepted because the pound # sign and the underscore _ symbol is not included in the bracket expression. \
+myname@.com is not accepted because there are no character values following the @ symbol. \
+myname@email.ccccccccccccoooooooooooommmmmmmm is not accepted because there are more than 6 characters after the last period. \
+
 ### Character Classes
+
+A character class in regards to a regex identifies an assortment of characters, any of which can occur in an input string to satisfy a match. Although not always, characters classes are more often than not found inbetween the square [] brackets.
+
+Some examples of utilizing character classes are as follows:
+
+* \d identifies the string value of any digit. This class is equivalent to the bracket expression [0-9].
+
+* \D operates in an opposite nature to the \d character class. \D matches all values but excludes the values of 0-9.
+
+* \w identifies any alphanumeric characte, with which includes the underscore _ symbol. This character class example is the same as writing [A-Za-z0-9_].
+
+* \W oporates opposite to the \w character class. This character class matches everything that is not [A-Za-z0-9_].
+
+* \s will match any whitespace, tabs and/or spaces
+
+* \S opposite of the \s character class, will match everything that is not whitespace, tabs, and/or spaces
+
+In the email regex example, we see the inclusion of the character class \d: `([ \d a-z\.-]+)` This example allows the numeric string value of any variation of 0-9.
 
 ### The OR Operator
 
@@ -81,6 +155,12 @@ This can be implemented into the regex by using one or more of the following:
 
 ### Character Escapes
 
+The forward \ slash indentifies that the character that falls in succession to the \ symbol is a literal interpretation identifier. This allows special characters that are pre-designated with a specific command in a regex, to be used as a character value in the search algorithm.
+
+In the Email Regex example: `/^([a-z0-9_ \. -]+)@([\da-z \. -]+) \. ([a-z \. ]{2,6})$/` the expression uses character escapes in four seperate locations. This parameter will accept a literal period in the string that is returned.
+
+Keep in mind that although the character escapes are used to identify a literal match, character escapes lose their super powers inside bracket expressions. For example, in the subexpression ([\da-z\.-]+), the \d does not represent a literal d match, instead, the forward \ slash represents a numeric string value.
+
 ## Author
 
-A short section about the author with a link to the author's GitHub profile (replace with your information and a link to your profile)
+Thank you for visiting my tutorial, I hope with this walkthrough, you have a better understanding of how an email regex oporates, as well as, how regex works in general! You can find me on github via https://github.com/K-Kelsey or search me by username: K-Kelsey
